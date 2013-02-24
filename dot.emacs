@@ -22,6 +22,11 @@
 ;; always end a file with a newline
 ;(setq require-final-newline 'query)
 
+;; Disable the icon bar
+(if window-system
+    (tool-bar-mode -1)
+)
+
 ;;; uncomment for CJK utf-8 support for non-Asian users
 ;; (require 'un-define)
 (custom-set-variables
