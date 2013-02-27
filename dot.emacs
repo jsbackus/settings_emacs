@@ -1,99 +1,77 @@
-;; .emacs
+;; Load verilog mode only when needed
+(autoload 'verilog-mode "verilog-mode" "Verilog mode" t ) 
+;; Any files that end in .v should be in verilog mode
+(setq auto-mode-alist (cons  '("\\.v\\'" . verilog-mode) auto-mode-alist)) 
+(setq auto-mode-alist (cons  '("\\.vh\\'" . verilog-mode) auto-mode-alist)) 
+(setq auto-mode-alist (cons  '("\\.vm\\'" . verilog-mode) auto-mode-alist)) 
+(setq auto-mode-alist (cons  '("\\.tb\\'" . verilog-mode) auto-mode-alist)) 
+(setq auto-mode-alist (cons  '("\\.tv\\'" . verilog-mode) auto-mode-alist)) 
+;; Any files in verilog mode should have their keywords colorized
+(add-hook 'verilog-mode-hook '(lambda () (font-lock-mode 1)))
+;; Kill annoying auto newline on ;
+(setq verilog-auto-newline nil)
+;; Set verilog Compile command to "verilog"
+(setq verilog-compiler "verilog ") 
+;; Show time on modeline
+(display-time)
+;; Any files that end in .tl should be c  mode
+(setq auto-mode-alist (cons  '("\\.tl\\'" . c-mode) auto-mode-alist)) 
+;; Any files in c mode should have their keywords colorized
+(add-hook 'c-mode-hook '(lambda () (font-lock-mode 1)))
 
-;; Add .emacs.d to load path
-(add-to-list 'load-path "~/.emacs.d")
+;; Any files in emacs lisp mode should have their keywords colorized
+(add-hook 'emacs-lisp-mode-hook '(lambda () (font-lock-mode 1)))
 
-;;; uncomment this line to disable loading of "default.el" at startup
-;; (setq inhibit-default-init t)
+(setq auto-mode-alist (cons '("\\.bas" . visual-basic-mode) auto-mode-alist))
+(setq interpreter-mode-alist (cons '("visual-basic" . visual-basic-mode)
+interpreter-mode-alist))
+(autoload 'visual-basic-mode "visual-basic-mode" "VB Editing Mode." t)
 
-;; enable visual feedback on selections
-;(setq transient-mark-mode t)
+(add-hook `text-mode-hook `flyspell-mode)
+(add-hook `latex-mode-hook `flyspell-mode)
+(add-hook `tex-mode-hook `flyspell-mode)
+(add-hook `bibtex-mode-hook `flyspell-mode)
 
-;; default to better frame titles
-(setq frame-title-format
-      (concat  "%b - emacs@" (system-name)))
+(setq header-user-name "Jeff")
+(require 'bibtex)
 
-;; default to unified diffs
-(setq diff-switches "-u")
+;; Options Menu Settings
+;; =====================
+(cond
+ ((and (string-match "XEmacs" emacs-version)
+       (boundp 'emacs-major-version)
+       (or (and
+            (= emacs-major-version 19)
+            (>= emacs-minor-version 14))
+           (= emacs-major-version 20))
+       (fboundp 'load-options-file))
+  (load-options-file "/home/jbackus/.xemacs-options")))
+;; ============================
+;; End of Options Menu Settings
+(custom-set-variables
+ '(load-home-init-file t t))
+(custom-set-faces)
 
-;; Display column numbers
+;; enable line and column modes on startup
 (setq column-number-mode t)
-
-;; always end a file with a newline
-;(setq require-final-newline 'query)
+(setq line-number-mode t)
 
 ;; Disable the icon bar
 (if window-system
     (tool-bar-mode -1)
 )
 
-;;; uncomment for CJK utf-8 support for non-Asian users
-;; (require 'un-define)
-(custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- )
-(custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
-;; '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 101 :width normal :foundry "unknown" :family "DejaVu Sans Mono")))))
-  ;; edited by jsb
-  '(tex-verbatim ((t (:foundry "courier" :family "*"))))
-  '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 101 :width normal :foundry "unknown" :family "DejaVu Sans Mono")))))
+;; change colors
+;;(add-to-list 'load-path "/home/jbackus/local_modules/jsbTools/linux/1.0/usr/share/emacs/site-list/color-theme/color-theme.el")
+(require 'color-theme)
+(eval-after-load "color-theme"
+  '(progn
+     (color-theme-initialize)
+     (color-theme-hober)))
 
-;; disable startup screen
+;; Disable startup screen
 (setq inhibit-startup-screen t)
 
-;; ** FlySpell ** 
-;; See: 
-;; - http://www-sop.inria.fr/members/Manuel.Serrano/flyspell/flyspell.html
-;; - http://www.emacswiki.org/emacs/FlySpell
-;; Make sure one has an aspell or ispell dictionary on system!
-
-;; Load it
-(autoload 'flyspell-mode "flyspell" "On-the-fly spelling checker." t)
-;(autoload 'flyspell-delay-command "flyspell" "Delay on command." t)
-;(autoload 'tex-mode-flyspell-verify "flyspell" "" t)
-
-;; Fix flyspell problem -- see http://stackoverflow.com/questions/1781762/enabling-flyspell-mode-gives-an-error
-(setq flyspell-issume-welcome-flag nil)
-
-;; Enable Flyspell in Text mode
-(add-hook 'text-mode-hook 'flyspell-mode)
-
-;; Enable Flyspell in TeX and LaTeX modes
-(add-hook 'TeX-mode-hook 'flyspell-mode)
-(add-hook 'LaTeX-mode-hook 'flyspell-mode)
-
-;; Enable sorting by likeness
-(setq flyspell-sort_corrections nil)
-
-;; Disable printing messages for every word
-(setq flyspell-issue-message-flag nil)
-
-;; Modeline stuff
-;; See: http://www.emacswiki.org/emacs/ModeLinePosition
-(setq modelinepos-column-limit 79)
+; Enable and configure modeline-posn.el
 (require 'modeline-posn)
-;(add-hook 'text-mode-hook 'modeline-posn)
-;(add-hook 'TeX-mode-hook 'modeline-posn)
-;(add-hook 'LaTeX-mode-hook 'modeline-posn)
-;(add-hook 'c-mode-hook 'modeline-posn)
-
-;; Fill-column-indicator stuff
-;; See: http://www.emacswiki.org/emacs/FillColumnIndicator
-(setq fci-rule-column 80)
-;(setq fci-rule-column 110)
-(require 'fill-column-indicator)
-(add-hook 'text-mode-hook 'fci-mode)
-(add-hook 'TeX-mode-hook 'fci-mode)
-(add-hook 'LaTeX-mode-hook 'fci-mode)
-(add-hook 'c-mode-hook 'fci-mode)
-(add-hook 'c++-mode-hook 'fci-mode)
-
-;; Enable system copy work with Emacs paste and vice-versa
-;(setq x-select-enable-clipboard t)
+(setq modelinepos-column-limit 79)
