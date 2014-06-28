@@ -79,23 +79,24 @@
 ;; See: http://www.emacswiki.org/emacs/ModeLinePosition
 (setq modelinepos-column-limit 79)
 (require 'modeline-posn)
-;(add-hook 'text-mode-hook 'modeline-posn)
-;(add-hook 'TeX-mode-hook 'modeline-posn)
-;(add-hook 'LaTeX-mode-hook 'modeline-posn)
-;(add-hook 'c-mode-hook 'modeline-posn)
-;(add-hook 'python-mode-hook 'modeline-posn)
+(add-hook 'text-mode-hook 'modeline-posn)
+(add-hook 'TeX-mode-hook 'modeline-posn)
+(add-hook 'LaTeX-mode-hook 'modeline-posn)
+(add-hook 'c-mode-hook 'modeline-posn)
+(add-hook 'c++-mode-hook 'modeline-posn)
+(add-hook 'python-mode-hook 'modeline-posn)
 
 ;; Fill-column-indicator stuff
 ;; See: http://www.emacswiki.org/emacs/FillColumnIndicator
-(setq fci-rule-column 80)
+;(setq fci-rule-column 80)
 ;(setq fci-rule-column 110)
-(require 'fill-column-indicator)
-(add-hook 'text-mode-hook 'fci-mode)
-(add-hook 'TeX-mode-hook 'fci-mode)
-(add-hook 'LaTeX-mode-hook 'fci-mode)
-(add-hook 'c-mode-hook 'fci-mode)
-(add-hook 'c++-mode-hook 'fci-mode)
-(add-hook 'python-mode-hook 'fci-mode)
+;(require 'fill-column-indicator)
+;(add-hook 'text-mode-hook 'fci-mode)
+;(add-hook 'TeX-mode-hook 'fci-mode)
+;(add-hook 'LaTeX-mode-hook 'fci-mode)
+;(add-hook 'c-mode-hook 'fci-mode)
+;(add-hook 'c++-mode-hook 'fci-mode)
+;(add-hook 'python-mode-hook 'fci-mode)
 
 ;; Enable system copy work with Emacs paste and vice-versa
 ;(setq x-select-enable-clipboard t)
